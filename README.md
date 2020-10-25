@@ -26,7 +26,7 @@ jobs:
         run: |
           cd example && GOOS=linux go build -v -a -o main main.go && zip deployment.zip main
       - name: deploy zip
-        uses: appleboy/lambda-action
+        uses: appleboy/lambda-action@v0.0.8
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
