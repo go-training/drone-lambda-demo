@@ -1,0 +1,22 @@
+kind: pipeline
+name: default
+
+steps:
+- name: build
+  image: go:1.15
+  commands:
+  - cd example && GOOS=linux go build -v -a -o main main.go && zip deployment.zip main
+
+- name: deploy-lambda
+  image: appleboy/drone-lambda
+  settings:
+    pull: true
+    aws_access_key_id:
+      from_secret: AWS_ACCESS_KEY_ID
+    aws_secret_access_key:
+      from_secret: AWS_SECRET_ACCESS_KEY
+    aws_region:
+      from_secret: AWS_REGION
+    function_name: gorush
+    zip_file: example/deployment.zip
+    debug: true
