@@ -71,7 +71,7 @@ steps:
 
 ## Deploy with GitLab CI
 
-See the [source repository](https://gitlab.com/appleboy/drone-lambda-demo)
+See the [source repository](https://gitlab.com/appleboy/drone-lambda-demo) and you can also see [the original documentation)[https://docs.gitlab.com/ee/user/project/clusters/serverless/aws.html] from GitLab CI/CD which use the [Serverless Framework can deploy to AWS](https://www.serverless.com/framework/docs/providers/aws/).
 
 ```yaml
 variables:
