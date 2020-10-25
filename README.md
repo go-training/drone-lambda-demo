@@ -107,6 +107,6 @@ deploy:
   artifacts:
     paths:
       - ${ARTIFACTS_DIR}
-  script: 
+  script:
     - /bin/drone-lambda
 ```
