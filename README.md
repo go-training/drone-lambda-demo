@@ -68,3 +68,45 @@ steps:
     zip_file: example/deployment.zip
     debug: true
 ```
+
+## Deploy with GitLab CI
+
+See the [source repository](https://gitlab.com/appleboy/drone-lambda-demo)
+
+```yaml
+variables:
+  ARTIFACTS_DIR: artifacts
+  GIT_DEPTH: 1
+
+before_script:
+  - mkdir -p ${CI_PROJECT_DIR}/${ARTIFACTS_DIR}
+
+stages:
+  - build
+  - deploy
+
+build:
+  image: golang:1.15
+  stage: build
+  script:
+    - apt-get update && apt-get -y install zip
+    - cd example && GOOS=linux go build -v -a -o main main.go && zip deployment.zip main
+    - mv deployment.zip ${CI_PROJECT_DIR}/${ARTIFACTS_DIR}/
+  artifacts:
+    paths:
+      - ${ARTIFACTS_DIR}
+
+deploy:
+  image: appleboy/drone-lambda
+  variables:
+    FUNCTION_NAME: 'gorush'
+    DEBUG: 'true'
+    ZIP_FILE: '${CI_PROJECT_DIR}/${ARTIFACTS_DIR}/deployment.zip'
+    GIT_STRATEGY: none
+  stage: deploy
+  artifacts:
+    paths:
+      - ${ARTIFACTS_DIR}
+  script: 
+    - /bin/drone-lambda
+```
